@@ -39,7 +39,7 @@
   command: "gem install passenger -v {{ passenger_version }}" 
 
 - name: install nginx using passenger
-  command: "passenger-install-apache2-module -a" 
+  command: "/usr/local/bin/passenger-install-apache2-module -a" 
 
 
 - name: add virtualhost for application
