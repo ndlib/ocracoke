@@ -1,13 +1,15 @@
 ---
-- hosts: ocracoke
+- hosts: localhost
   become: yes
   become_method: sudo
   become_user: root
-  remote_user: root
+#  remote_user: root
   gather_facts: yes
   vars:
     project_name: ocr
-    ruby_version: ruby-2.3.1
+    ruby_version: ruby-2.4.4
+    web_server_name: "{{ ansible_fqdn }}"
+    passenger_app_env: development
   pre_tasks:
     - yum:
         pkg: "mysql-devel"
@@ -25,7 +27,7 @@
       rvm1_rubies:
         - "{{ ruby_version }}"
       rvm1_bundler_install: True
-      rvm1_user: 'vagrant'
+      rvm1_user: 'ec2-user'
       rvm1_rvm_version: 'stable'
       rvm1_autolib_mode: 3
     # - role: rvm-setup
@@ -50,10 +52,10 @@
         - port: 8983
         - core_name: ocracoke
       service_name: solr-ocracoke
-      confdir: /vagrant/solr_conf
+      confdir: /home/ec2-user/ocracoke/solr_conf
       cores:
         - ocracoke
-      group: vagrant
+      group: ec2-user
   post_tasks:
     # These post_tasks are to create the same directories as exist on the
     # production server so that we can actually try this out!
