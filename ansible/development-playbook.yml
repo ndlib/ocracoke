@@ -53,7 +53,7 @@
         - port: 8983
         - core_name: ocracoke
       service_name: solr-ocracoke
-      confdir: /home/ec2-user/ocracoke/solr_conf
+      confdir: /vagrant/solr_conf
       cores:
         - ocracoke
       group: ec2-user

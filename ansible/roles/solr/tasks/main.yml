@@ -37,7 +37,7 @@
       group: solr
       groups: "{{group}}"
       append: yes
-  
+
   - name: confdir should be readable by deploy group
     file:
       path: "{{confdir}}"
