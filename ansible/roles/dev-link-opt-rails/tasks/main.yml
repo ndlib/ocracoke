@@ -3,10 +3,10 @@
   file:
     path: /opt/{{project_name}}
     state: directory
-- name: symlink /opt/project_name/current to /home/ec2-user/ocracoke
+- name: symlink /opt/project_name/current to /vagrant/ocracoke
   file:
     path: /opt/{{project_name}}/current
-    src: /home/ec2-user/ocracoke
+    src: /vagrant/ocracoke
     state: link
     force: yes
   notify: restart httpd
