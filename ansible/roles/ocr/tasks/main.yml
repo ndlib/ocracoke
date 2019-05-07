@@ -12,7 +12,7 @@
     - python-beautifulsoup
     - numpy
     - scipy
-    - python-matplotlib
+#    - python-matplotlib
 
 - name: OCR | check out hocr-tools
 # FIXME: change back to: https://github.com/tmbdev/hocr-tools.git https://github.com/jronallo/hocr-tools.git
