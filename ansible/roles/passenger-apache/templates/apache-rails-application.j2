@@ -18,8 +18,12 @@
    SSLCipherSuite ECDH+AESGCM:DH+AESGCM:ECDH+AES256:DH+AES256:ECDH+AES128:DH+AES:ECDH+3DES:DH+3DES:RSA+AESGCM:RSA+AES:RSA+3DES:!aNULL:!MD5:!DSS
    SSLHonorCipherOrder on
 
-   SSLCertificateFile /etc/pki/tls/certs/{{ web_server_name }}.crt
-   SSLCertificateKeyFile /etc/pki/tls/certs/{{ web_server_name }}.key
+#   SSLCertificateFile /etc/pki/tls/certs/{{ web_server_name }}.crt
+#   SSLCertificateKeyFile /etc/pki/tls/certs/{{ web_server_name }}.key
+
+   SSLCertificateFile /etc/ssl/library_nd_edu_cert.chain.cer
+   SSLCertificateKeyFile /etc/ssl/library_nd_edu.key
+
    # SSLCertificateChainFile  /etc/pki/tls/certs/incommon.cert
 
    {% if apache_virtualhost_lines %}
