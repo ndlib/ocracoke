@@ -15,6 +15,7 @@ gem 'dotenv-rails'
 gem 'whenever', require: false
 gem 'addressable'
 gem 'thor'
+gem 'bigdecimal'
 
 # security update 2019-03-14
 gem "ffi", ">= 1.9.24"
