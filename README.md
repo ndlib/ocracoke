@@ -29,11 +29,13 @@ git clone git@github.com:NCSU-Libraries/ocracoke.git
 cd ocracoke
 ```
 
-Start vagrant:
+Build Linux2 EC2 instance:
 
 ```sh
-vagrant plugin install vagrant-vbguest vagrant-triggers
-vagrant up
+ssh to EC2 instance.
+Enable linux extras and yum install ansible2,ruby2.4, and epel
+Create /ocracoke folder, cd into it, and pull down this repository.
+run ansible-playbook /ocracoke/ansible/development-playbook.yml
 ```
 
 While this is installing the appropriate box and provisioning it, you can look through the /ansible directory to get some idea of all the dependencies and how the application gets deployed to a production environment.
