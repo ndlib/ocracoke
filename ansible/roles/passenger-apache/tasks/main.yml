@@ -1,0 +1,57 @@
+---
+- name: install passenger dependencies
+  yum:
+    pkg: "{{item}}"
+    state: present
+    update_cache: yes
+  with_items:
+#    - epel-release
+    - pygpgme
+    - curl
+    - mod_ssl
+    - gcc
+    - gcc-c++
+    - libcurl-devel
+    - openssl-devel
+    - ruby-devel
+    - system-rpm-config
+    - zlib-devel
+
+# TODO: change to yumrepo when ansible version 2.1 is released
+# TODO: change this to a template?
+
+#- name: add passenger repository
+#  get_url:
+#    url: https://oss-binaries.phusionpassenger.com/yum/definitions/el-passenger.repo
+#    dest: /etc/yum.repos.d/
+
+#- name: install mod_passenger
+#  yum: pkg=mod_passenger state=latest
+#  notify:
+#    - restart httpd
+
+#- name: passenger-devel
+#  yum: pkg=passenger-devel state=latest
+#  notify:
+#    - restart httpd
+
+- name: install passenger as a gem
+  command: "gem install passenger -v {{ passenger_version }}" 
+
+- name: install nginx using passenger
+  command: "/usr/local/bin/passenger-install-apache2-module -a" 
+
+
+- name: add virtualhost for application
+  template:
+    src: apache-rails-application.j2
+    dest: "/etc/httpd/conf.d/passenger-{{project_name}}.conf"
+  notify:
+    - restart httpd
+
+- name: create a self-signed certificate
+  become: yes
+  command: "openssl req -x509 -nodes -batch -days 365 -newkey rsa:2048 -keyout /etc/pki/tls/certs/{{web_server_name}}.key -out /etc/pki/tls/certs/{{web_server_name}}.crt"
+
+- name: start httpd
+  service: name=httpd state=started enabled=yes

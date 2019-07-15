@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.3.1'
+ruby '2.4.4'
 
 gem 'rsolr'
 gem 'iiif_url'
@@ -15,6 +15,7 @@ gem 'dotenv-rails'
 gem 'whenever', require: false
 gem 'addressable'
 gem 'thor'
+gem 'bigdecimal'
 
 # security update 2019-03-14
 gem "ffi", ">= 1.9.24"

@@ -29,17 +29,19 @@ git clone git@github.com:NCSU-Libraries/ocracoke.git
 cd ocracoke
 ```
 
-Start vagrant:
+Build Linux2 EC2 instance:
 
 ```sh
-vagrant plugin install vagrant-vbguest vagrant-triggers
-vagrant up
+ssh to EC2 instance.
+Enable linux extras and yum install ansible2,ruby2.4, and epel
+Create /ocracoke folder, cd into it, and pull down this repository.
+run ansible-playbook /ocracoke/ansible/development-playbook.yml
 ```
 
 While this is installing the appropriate box and provisioning it, you can look through the /ansible directory to get some idea of all the dependencies and how the application gets deployed to a production environment.
 
 ### Solr
-On the host visit Solr at <http://localhost:8984>. You should see the "ocracoke" Solr core under "Core Admin."
+On the host visit Solr at <http://localhost:8983>. You should see the "ocracoke" Solr core under "Core Admin."
 
 ### Rails
 
@@ -52,7 +54,7 @@ bin/rake db:schema:load
 bin/rails s -b 0.0.0.0
 ```
 
-On the host visit Rails: <http://localhost:8090/jobs>. This route is protected with HTTP Basic Auth. Look in the `.env` file for the credentials. You should see the Resque jobs page.
+On the host visit Rails: <http://localhost:3000/jobs>. This route is protected with HTTP Basic Auth. Look in the `.env` file for the credentials. You should see the Resque jobs page.
 
 ### OCR a Resource
 
@@ -80,7 +82,7 @@ You should see output on the console that the jobs are working. The Resque web i
 
 ### Search Inside
 
-At this point you ought to be able to see the result for Ocracoke in the search inside results: <http://localhost:8090/search/LD3928-A23-1947?q=ocracoke>
+At this point you ought to be able to see the result for Ocracoke in the search inside results: <http://localhost:3000/search/LD3928-A23-1947?q=ocracoke>
 
 You may need to run a Solr commit first before you see results:
 
@@ -94,7 +96,7 @@ Suggestions will not work yet until the suggestion dictionary is built. This is 
 bin/rake ocracoke:solr:optimize
 ```
 
-You should now see a suggestion for "ocra" <http://localhost:8090/suggest/LD3928-A23-1947?q=ocra>
+You should now see a suggestion for "ocra" <http://localhost:3000/suggest/LD3928-A23-1947?q=ocra>
 
 ## OCRing and Indexing Your Own Content
 
@@ -107,7 +109,7 @@ There is currently no user interface for adding OCR jobs. You may eventually wan
 Or you could use the API for sending OCR jobs in. This is one way that NCSU Libraries can kick jobs off from a separate application.
 
 ```sh
-curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"resource": "ua102_002-001-bx0012-013-008", "images": ["ua102_002-001-bx0012-013-008_0001","ua102_002-001-bx0012-013-008_0002","ua102_002-001-bx0012-013-008_0003"]}' -H  "Authorization: Token token=scams_token, user=scams" http://localhost:8090/api/ocr_resource
+curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" -d '{"resource": "ua102_002-001-bx0012-013-008", "images": ["ua102_002-001-bx0012-013-008_0001","ua102_002-001-bx0012-013-008_0002","ua102_002-001-bx0012-013-008_0003"]}' -H  "Authorization: Token token=scams_token, user=scams" http://localhost:3000/api/ocr_resource
 ```
 
 You should now see 1 job in the resource_ocr queue. Take a look in `./config/api_tokens.yml` for the valid users and tokens.
@@ -172,11 +174,11 @@ You can include the search endpoint in a [IIIF Presentation API](http://iiif.io/
 "service": [
   {
     "@context": "http://iiif.io/api/search/0/context.json",
-    "@id": "http://localhost:8090/search/LD3928-A23-1947",
+    "@id": "http://localhost:3000/search/LD3928-A23-1947",
     "profile": "http://iiif.io/api/search/0/search",
     "label": "Search within this thing",
     "service": {
-      "@id": "http://localhost:8090/suggest/LD3928-A23-1947",
+      "@id": "http://localhost:3000/suggest/LD3928-A23-1947",
       "profile": "http://iiif.io/api/search/0/autocomplete",
       "label": "Get suggested words"
     }
@@ -196,7 +198,7 @@ In some cases you may already have OCR or the text has been transcribed. In thes
 
 ## Suggester
 
-A simple suggester is provided. It currently has some limitations where it can only suggest a single word and not a phrase. This example request would return suggested terms like "ocracoke": <http://localhost:8090/suggest/LD3928-A23-1947?q=ocra>
+A simple suggester is provided. It currently has some limitations where it can only suggest a single word and not a phrase. This example request would return suggested terms like "ocracoke": <http://localhost:3000/suggest/LD3928-A23-1947?q=ocra>
 
 ## Solr in Vagrant
 

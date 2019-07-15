@@ -1,0 +1,12 @@
+---
+- name: create /opt/{{project_name}}
+  file:
+    path: /opt/{{project_name}}
+    state: directory
+- name: symlink /opt/project_name/current to /ocracoke
+  file:
+    path: /opt/{{project_name}}/current
+    src: /ocracoke
+    state: link
+    force: yes
+  notify: restart httpd
